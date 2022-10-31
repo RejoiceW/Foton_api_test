@@ -1,28 +1,16 @@
 # 测试登录
-
-import requests
-import json
+from business.common import login, openUrl
 
 url = 'https://srstest.foton.com.cn/'
 
 
+def test_openUrl():
+    response = openUrl()
+    assert response.status_code == 200
+
+
 def test_login():
-    r1 = requests.get(url + 'login')
-    assert r1.status_code == 200
-
-    data = {
-        "grantType": "companyAdmin",
-        "username": "13183880002",
-        "password": "BwLtwISfvI7mV6UFFGIW6Q==",
-        "companyIndex": "foton",
-        "appKey": "app",
-        "captchaKey": ""
-    }
-    header = {'authorization': 'Basic YXBwOg==', 'Content-Type': 'application/json', 'client-type': 'web'}
-    r2 = requests.post(url + 'api/auth/oauth/token', data=json.dumps(data), headers=header)
-    print(r2.json())
-    assert r2.status_code == 200
-    assert r2.json()['msg'] == '成功'
-
-
-test_login()
+    response = login(13183880002)
+    print(response.json())
+    assert response.status_code == 200
+    assert response.json()['msg'] == '成功'
