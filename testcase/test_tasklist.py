@@ -4,6 +4,5 @@ from business.common import get_tasklist
 
 
 def test_tasklist():
-    response = get_tasklist(13183886106)
-    print(response.json())
+    response = get_tasklist()
     assert response.json()['msg'] == '成功'

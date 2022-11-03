@@ -1,64 +1,35 @@
 # 公共方法
-import pytest
+import os.path
+
 import requests
 import json
+import yaml
+import time
 
-url = 'https://srstest.foton.com.cn'
-username = "13183880002"
-
-
-# 打开登陆页
-def openUrl():
-    response = requests.get(url + '/login')
-    return response
+from business.login import url
 
 
-# 登录
-def login(_username):
-    data = {
-        "grantType": "companyAdmin",
-        "username": _username,
-        "password": "BwLtwISfvI7mV6UFFGIW6Q==",
-        "companyIndex": "foton",
-        "appKey": "app",
-        "captchaKey": ""
-    }
-    header = {'authorization': 'Basic YXBwOg==', 'Content-Type': 'application/json', 'client-type': 'web'}
-    login_data = requests.post(url + '/api/auth/oauth/token', data=json.dumps(data), headers=header)
-    # print(response.json())
-    return login_data
-
-
-# 登陆获取token
-@pytest.fixture(scope="session")
-def get_token_fixture():
-    data = {
-        "grantType": "companyAdmin",
-        "username": "13183880002",
-        "password": "BwLtwISfvI7mV6UFFGIW6Q==",
-        "companyIndex": "foton",
-        "appKey": "app",
-        "captchaKey": ""
-    }
-    header = {'authorization': 'Basic YXBwOg==', 'Content-Type': 'application/json', 'client-type': 'web'}
-    login_data = requests.post(url + '/api/auth/oauth/token', data=json.dumps(data), headers=header)
-    token = 'Bearer ' + login_data.json()['data']['accessToken']
+# 读取yaml文件的token
+def read_yaml():
+    yamlfile = os.path.dirname(__file__) + '.\\token.yaml'
+    with open(yamlfile, 'r', encoding='utf-8') as f:
+        result = yaml.load(f.read(), Loader=yaml.FullLoader)
+    token = result["token"]
     return token
 
 
 # 获取公告列表
-def get_adverlist(get_token_fixture):
-    # token = get_token(username)
-    # print(token)
-    header = {'authorization': get_token_fixture, 'Content-Type': 'application/json', 'client-type': 'web'}
+def get_adverlist():
+    token = read_yaml()
+    header = {'authorization': token, 'Content-Type': 'application/json', 'client-type': 'web'}
     adverlist = requests.get(url + '/api/upms/v1/foton/adver/list?pageNum=1&pageSize=10', headers=header)
     return adverlist
 
 
 # 获取知识库列表
-def get_knowledgemange(get_token_fixture):
-    # token = get_token(username)
-    header = {'authorization': get_token_fixture, 'Content-Type': 'application/json', 'client-type': 'web'}
+def get_knowledgemange():
+    token = read_yaml()
+    header = {'authorization': token, 'Content-Type': 'application/json', 'client-type': 'web'}
     knowledgemange = requests.get(url + '/api/upms/v1/foton/knowledgemange/list?'
                                         'kno=&kname=&state=-2&createBy=&startTime=&endTime=&operationPersonName=&pageNum=1&pageSize=10',
                                   headers=header)
@@ -66,17 +37,48 @@ def get_knowledgemange(get_token_fixture):
 
 
 # 获取待办列表
-def get_fotodo(get_token_fixture):
-    # token = get_token(username)
-    header = {'authorization': get_token_fixture, 'Content-Type': 'application/json', 'client-type': 'web'}
+def get_fotodo():
+    token = read_yaml()
+    header = {'authorization': token, 'Content-Type': 'application/json', 'client-type': 'web'}
     fotodo = requests.get(url + '/api/upms/v1/foton/fotodo/list?pageNum=1&pageSize=10&inputType=0', headers=header)
     return fotodo
 
 
 # 获取任务列表
-def get_tasklist(get_token_fixture):
-    # token = get_token(username)
+def get_tasklist():
+    token = read_yaml()
     data = {'inTaskStatus': 0, 'pageNum': 1, 'pageSize': 10}
-    header = {'authorization': get_token_fixture, 'Content-Type': 'application/json', 'client-type': 'web'}
+    header = {'authorization': token, 'Content-Type': 'application/json', 'client-type': 'web'}
     tasklist = requests.post(url + '/api/foton/v1/web/expert/task/list', data=json.dumps(data), headers=header)
     return tasklist
+
+
+# 新建知识库
+def create_knowledgemange():
+    token = read_yaml()
+    now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+    data = {"ktid": 35, "kname": now, "ktype": "电路图", "brandId": "2b2a38b6-1076-11ec-9d3d-00163e20",
+            "brandName": "全品牌", "brandCode": "111111",
+            "brandRelObjectInputList": [], "carname": "发动机",
+            "carid": 244, "desc": "", "detail": "", "ossList": [], "commitOrDraft": 1}
+    header = {'authorization': token, 'Content-Type': 'application/json', 'client-type': 'web'}
+    response = requests.post(url + '/api/upms/v1/foton/knowledgemange/add', data=json.dumps(data), headers=header)
+    return response
+
+
+# 新建公告
+def create_adver():
+    token = read_yaml()
+    now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+    data = {"title": now, "adverType": 24, "adverBrandList": [{"brandId": "2b2a38b6-1076-11ec-9d3d-00163e20"}],
+            "content": now, "adverRoleList": [{"roleId": "111111"}], "carModelList": [],
+            "status": 3, "spId": "4A9AD2C56A5B424198EEBDC5056A65BD"}
+    header = {'authorization': token, 'Content-Type': 'application/json', 'client-type': 'web'}
+    response = requests.post(url + '/api/upms/v1/foton/adver/insert', data=json.dumps(data), headers=header)
+    return response
+
+
+# 获取意见反馈列表
+# def get_feedback():
+
+# if __name__ == '__main__':
