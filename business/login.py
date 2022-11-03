@@ -4,7 +4,7 @@ import requests
 import yaml
 
 url = 'https://srstest.foton.com.cn'
-username = "13183886106"
+username = "13183880002"
 
 
 # 打开登陆页
