@@ -98,4 +98,12 @@ def get_userlist(_data):
     response = requests.post(url + "/api/upms/v1/foton/system/deviceuser/list", data=json.dumps(_data), headers=header)
     return response
 
+
+# 新建流程
+def create_process(_data):
+    token = read_yaml()
+    header = {'authorization': token, 'Content-Type': 'application/json', 'client-type': 'web'}
+    response = requests.post(url + "/api/foton/v1/process/save", data=json.dumps(_data), headers=header)
+    return response
+
 # if __name__ == '__main__':

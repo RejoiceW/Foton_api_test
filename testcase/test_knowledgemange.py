@@ -27,6 +27,6 @@ def test_create_knowledgemange():
     assert response.json()['msg'] == '成功'
     # 创建后再获取一次最新列表第一条数据的id
     knowledgemange_id_new = get_knowledgemange().json()['data']['rows'][0]['id']
-    print(knowledgemange_id_new)
+    # print(knowledgemange_id_new)
     # 判断最新列表第一条数据的id自增1
     assert knowledgemange_id_new == knowledgemange_id_old + 1
