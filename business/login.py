@@ -35,7 +35,7 @@ def write_yaml(_token):
     data = {
         "token": _token
     }
-    with open(".\\token.yaml", "w", encoding="utf-8") as f:
+    with open("../data/token.yaml", "w", encoding="utf-8") as f:
         yaml.dump(data=data, stream=f, allow_unicode=True)
 
 
