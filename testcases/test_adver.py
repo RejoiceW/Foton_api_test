@@ -15,7 +15,7 @@ def test_get_adver():
 
 
 # 测试新建公告
-def test_create_adver():
+def test_create_adver(get_token):
     data = {"title": now, "adverType": 24, "adverBrandList": [{"brandId": "2b2a38b6-1076-11ec-9d3d-00163e20"}],
             "content": now, "adverRoleList": [{"roleId": "111111"}], "carModelList": [],
             "status": 3, "spId": "4A9AD2C56A5B424198EEBDC5056A65BD"}

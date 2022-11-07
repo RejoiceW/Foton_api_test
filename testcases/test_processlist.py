@@ -7,7 +7,7 @@ now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
 
 
 # 测试获取流程管理列表
-def test_get_processlist():
+def test_get_processlist(get_token):
     data = {"processId": "", "processName": "", "createStartTime": "", "createEndTime": "", "reviewStartTime": "",
             "reviewEndTime": "", "pageNum": 1, "pageSize": 10}
     response = get_processlist(data)
@@ -16,7 +16,7 @@ def test_get_processlist():
 
 
 # 测试新建流程
-def test_create_process():
+def test_create_process(first):
     data_get = {"processId": "", "processName": "", "createStartTime": "", "createEndTime": "", "reviewStartTime": "",
                 "reviewEndTime": "", "pageNum": 1, "pageSize": 10}
     data_create = {"processId": "", "processName": now, "remark": "", "processType": 1,
@@ -31,7 +31,6 @@ def test_create_process():
     # 创建流程前先获取一次列表第一条数据的id
     process_id_old = get_processlist(data_get).json()['data']['rows'][0]['id']
     response = create_process(data_create)
-    print(response.json())
     assert response.status_code == 200
     assert response.json()['msg'] == '成功'
     # 创建后再获取一次最新列表第一条数据的id

@@ -1,10 +1,9 @@
-# 公共方法
+# 封装公共方法
 import os.path
 import requests
 import json
 import yaml
-import time
-from business.login import url
+from conftest import url
 
 
 # 读取yaml文件的token
