@@ -1,12 +1,13 @@
 # 测试流程管理
 
 import time
+import allure
 from business.common import get_processlist, create_process
 
 now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
 
 
-# 测试获取流程管理列表
+@allure.title('测试获取流程管理列表')
 def test_get_processlist(get_token):
     data = {"processId": "", "processName": "", "createStartTime": "", "createEndTime": "", "reviewStartTime": "",
             "reviewEndTime": "", "pageNum": 1, "pageSize": 10}
@@ -15,8 +16,8 @@ def test_get_processlist(get_token):
     assert response.json()['msg'] == '成功'
 
 
-# 测试新建流程
-def test_create_process(first):
+@allure.title('测试新建流程')
+def test_create_process(get_token):
     data_get = {"processId": "", "processName": "", "createStartTime": "", "createEndTime": "", "reviewStartTime": "",
                 "reviewEndTime": "", "pageNum": 1, "pageSize": 10}
     data_create = {"processId": "", "processName": now, "remark": "", "processType": 1,

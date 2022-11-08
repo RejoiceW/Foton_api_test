@@ -1,14 +1,16 @@
 # 测试知识库
 
 import time
+import allure
 from business.common import get_knowledgemange, create_knowledgemange
 
 now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
 
 
-# 测试获取知识库列表
-def test_get_knowledgemange(first):
-    response = get_knowledgemange()
+@allure.title('测试获取知识库列表')
+def test_get_knowledgemange(get_token):
+    data = 'kno=&kname=&state=-2&createBy=&startTime=&endTime=&operationPersonName=&pageNum=1&pageSize=10'
+    response = get_knowledgemange(data)
     assert response.status_code == 200
     assert response.json()['msg'] == '成功'
 

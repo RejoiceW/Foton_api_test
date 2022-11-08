@@ -1,15 +1,16 @@
-# 测试公告
+"""测试公告"""
 
+import allure
 from business.common import get_adverlist, create_adver
 import time
 
 now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
 
 
-# 测试获取公告列表
-def test_get_adver():
-    response = get_adverlist()
-    # print(response.json()['data']['rows'][0]['id'])
+@allure.title('测试获取公告列表')
+def test_get_adver(get_token):
+    data = "pageNum=1&pageSize=10"
+    response = get_adverlist(data)
     assert response.status_code == 200
     assert response.json()['msg'] == '成功'
 
