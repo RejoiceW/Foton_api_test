@@ -8,8 +8,7 @@ from conftest import url
 
 # 读取yaml文件的token
 def read_yaml():
-    yamlfile = os.path.dirname(__file__) + '.\\token.yaml'
-    with open(yamlfile, 'r', encoding='utf-8') as f:
+    with open('..\\data\\token.yaml', 'r', encoding='utf-8') as f:
         result = yaml.load(f.read(), Loader=yaml.FullLoader)
     token = result["token"]
     return token
@@ -47,6 +46,15 @@ def get_tasklist():
     data = {'inTaskStatus': 0, 'pageNum': 1, 'pageSize': 10}
     header = {'authorization': token, 'Content-Type': 'application/json', 'client-type': 'web'}
     response = requests.post(url + '/api/foton/v1/web/expert/task/list', data=json.dumps(data), headers=header)
+    return response
+
+
+# 获取评价记录
+def get_comment():
+    token = read_yaml()
+    data = {"creatorName": "", "taskCode": "", "pageNum": 1, "pageSize": 10, "commentStatus": "0"}
+    header = {'authorization': token, 'Content-Type': 'application/json', 'client-type': 'web'}
+    response = requests.post(url + '/api/foton/v1/admin/comment/list', data=json.dumps(data), headers=header)
     return response
 
 

@@ -9,7 +9,6 @@ now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
 # 测试获取公告列表
 def test_get_adver():
     response = get_adverlist()
-    # print(response.json()['data']['rows'][0]['id'])
     assert response.status_code == 200
     assert response.json()['msg'] == '成功'
 

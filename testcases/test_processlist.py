@@ -16,7 +16,7 @@ def test_get_processlist(get_token):
 
 
 # 测试新建流程
-def test_create_process(first):
+def test_create_process(get_token):
     data_get = {"processId": "", "processName": "", "createStartTime": "", "createEndTime": "", "reviewStartTime": "",
                 "reviewEndTime": "", "pageNum": 1, "pageSize": 10}
     data_create = {"processId": "", "processName": now, "remark": "", "processType": 1,
