@@ -11,8 +11,6 @@ def test_get_fault():
     oneday = datetime.timedelta(days=30)
     last_month = today - oneday
     data = "pageNum=1&pageSize=10&source=1&startTime=%s&endTime=%s" % (last_month, today)
-    print(data)
     response = get_fault(data)
-    print(response.json())
     assert response.status_code == 200
     assert response.json()['msg'] == '成功'
